@@ -1,0 +1,98 @@
+﻿<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+<script>
+
+    function LineChart(type) {
+        this.id = type.id;
+        this.name = type.name;
+        this.chartUrl = type.chartUrl;
+        this.dataParameter = type.dataParameter || "";
+        this.title = type.title || "";
+        this.subTitle = type.subTitle || "";
+        this.yAxisTitle = type.yAxisTitle || "";
+        this.maxWidth = type.maxWidth || 100;
+        this.chart = null/*new Highcharts()*/;
+        return this;
+    };
+
+    LineChart.prototype.createChart = function (chart, result) {
+        var series = result.series;
+        chart.chart = Highcharts.chart(chart.id, {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: chart.title
+            },
+
+            subtitle: {
+                text: chart.subTitle
+            },
+            xAxis: {
+                categories: result.xAxisTitles
+            },
+            yAxis: {
+                title: {
+                    text: chart.yAxisTitle
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+
+            series: series,
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: chart.maxWidth
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+    };
+
+    LineChart.prototype.loadChart = function (lineChartModel) {
+        var chart;
+        if (typeof lineChartModel == "undefined") {
+            chart = this;
+        } else {
+            chart = lineChartModel;
+        }
+
+        $.get(chart.chartUrl, chart.dataParameter, function (data, textStatus, jqXHR) {
+
+            chart.createChart(chart, data);
+
+        }, "json");
+
+    };
+
+    LineChart.prototype.setData = function (data) {
+        this.chart.setData(data);
+    };
+
+
+</script>

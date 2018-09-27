@@ -1,0 +1,40 @@
+﻿@using LineChartTagHelper.LineChart.Models
+@using LineChartTagHelper
+
+@model LineChartViewModel
+
+<div id="@Model.Id" data-name="@Model.Name"></div>
+
+<script>
+    
+
+    $(document).ready(function () {
+        debugger;
+        if (typeof window.lineChart == 'undefined') {
+            window.lineChart = {
+                getChart: function (chartId) {
+                    return window.lineChart.charts.filter(
+                        function (data) {
+                            return data.id == chartId
+                        }
+                    );
+                },
+                charts: []
+            };
+        }
+
+        var lineChart = new LineChart({
+            id            : "@Model.Id",
+            name          : "@Model.Name",
+            chartUrl       : "@Model.ChartUrl",
+            dataParameter : "@Model.DataParameter",
+            title         : "@Model.Title",
+            subTitle      : "@Model.SubTitle",
+            yAxisTitle    : "@Model.YAxisTitle",
+            maxWidth      : @Model.MaxWidth
+        });
+        console.log("@Model.Id")
+        lineChart.loadChart();
+        window.lineChart.charts.push(lineChart);
+    });
+</script>
