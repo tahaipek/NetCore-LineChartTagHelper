@@ -1,6 +1,8 @@
 # NetCore-LineChartTagHelper
 .Net Core Line Chart Tag Helper
 
+![enter image description here](https://github.com/tahaipek/NetCore-LineChartTagHelper/blob/master/ss01.png?raw=true)
+
 ```csharp
 
 
